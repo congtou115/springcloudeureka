@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+
 /**
  * [说明/描述]
  * @author ZhangBinBin
@@ -20,11 +22,16 @@ public class CustomerController {
 	    private RestTemplate restTemplate; // HTTP 访问操作类，
 	    @RequestMapping("/customer")
 	    //通过Ribbon调用服务
+	    @HystrixCommand(fallbackMethod = "customerFallback")//指定当服务不可用时调用的方法
 	    public String customer() {
 	    	//service-helloworld 为服务注册的name
 	        String providerMsg = restTemplate.getForEntity("http://service-helloworld/info",
 	                String.class).getBody();
 	        return "Hello,Customer! msg from provider : <br/><br/> " + providerMsg;
+	    }
+	    
+	    public String  customerFallback() {
+	    	return "service is not supported";
 	    }
 	    
 	    @Autowired

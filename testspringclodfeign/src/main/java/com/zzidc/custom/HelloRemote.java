@@ -17,7 +17,7 @@ import com.zzidc.hystrix.HelloRemoteHystrix;
  */
 @Service
 //name:远程服务名，即spring.application.name配置的名称
-@FeignClient(name= "service-helloworld",fallback  = HelloRemoteHystrix.class)
+@FeignClient(name= "service-helloworld",fallback  = HelloRemoteHystrix.class)//还可以使用fallbackfactory 能够获取具体的调用失败原因
 public interface HelloRemote {
 	//需要匹配服务提供者接口名称
 	@RequestMapping(value = "/producerHello")
