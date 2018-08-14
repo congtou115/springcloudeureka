@@ -1,7 +1,7 @@
  eureka:
      client:
          serviceUrl:
-             defaultZone: http://192.168.101.70:8761/eureka/
+             defaultZone: http://wolf:abc123@192.168.101.70:8761/eureka/
      instance:
          prefer-ip-address: true
  server:
