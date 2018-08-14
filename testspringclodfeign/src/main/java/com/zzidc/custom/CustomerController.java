@@ -22,7 +22,7 @@ public class CustomerController {
 	    //通过Ribbon调用服务
 	    public String customer() {
 	    	//service-helloworld 为服务注册的name
-	        String providerMsg = restTemplate.getForEntity("http://service-helloworld:8762/info",
+	        String providerMsg = restTemplate.getForEntity("http://service-helloworld/info",
 	                String.class).getBody();
 	        return "Hello,Customer! msg from provider : <br/><br/> " + providerMsg;
 	    }
