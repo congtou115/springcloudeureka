@@ -60,7 +60,7 @@ public class CustomZuulFallbackHandler implements ZuulFallbackProvider {
             }
 
             /**
-             * 当 springms-provider-user 微服务出现宕机后，客户端再请求时候就会返回 fallback 等字样的字符串提示；
+             * 当 getRoute()代表的 微服务出现宕机后，客户端再请求时候就会返回 fallback 等字样的字符串提示；
              *
              * 但对于复杂一点的微服务，我们这里就得好好琢磨该怎么友好提示给用户了；
              *
