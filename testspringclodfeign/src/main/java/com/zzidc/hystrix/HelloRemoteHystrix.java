@@ -1,5 +1,8 @@
 package com.zzidc.hystrix;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Component;
 
 import com.zzidc.custom.HelloRemote;
@@ -20,9 +23,17 @@ public class HelloRemoteHystrix implements HelloRemote{
 		return "sorry "+name+" there is a error happend";
 	}
 
+
 	@Override
-	public String makeAHello() {
-		return "sorry  there is a error happend";
+	public String info() {
+		
+		return "sorry,the info you asked is 机密文件";
+	}
+
+	@Override
+	public List<Map<String, String>> registered() {
+		
+		return null;
 	}
 
 }

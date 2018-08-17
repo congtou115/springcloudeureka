@@ -1,5 +1,8 @@
 package com.zzidc.custom;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,9 +45,13 @@ public class CustomerController {
 	        return helloRemote.sayHello(name);
 	    }
 	    
-	    @RequestMapping("/info")
+	    @RequestMapping("/serViceinfo")
 	    public String info(){
-	        return " Hi,I am a consumer!";
+	        return helloRemote.info();
+	    }
+	    @RequestMapping("/registed")
+	    public List<Map<String, String>> registeredInfo(){
+	    	return helloRemote.registered();
 	    }
 
 }
