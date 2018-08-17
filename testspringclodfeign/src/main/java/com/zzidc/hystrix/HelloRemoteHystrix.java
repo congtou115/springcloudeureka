@@ -20,4 +20,9 @@ public class HelloRemoteHystrix implements HelloRemote{
 		return "sorry "+name+" there is a error happend";
 	}
 
+	@Override
+	public String makeAHello() {
+		return "sorry  there is a error happend";
+	}
+
 }

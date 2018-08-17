@@ -33,8 +33,8 @@ public class Swagger2 {
 	
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder()
-				.title("springboot利用swagger构建api文档")
-				.description("简单优雅的restfun风格，http://blog.csdn.net/saytime")
+				.title("spring cloud eureka client")
+				.description("测试eureka服务注册与发现")
 				.termsOfServiceUrl("http://blog.csdn.net/saytime")
 				.version("1.0")
 				.build();
