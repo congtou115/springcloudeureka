@@ -25,12 +25,12 @@ public class SidecarApplication {
         SpringApplication.run(SidecarApplication.class, args);
     }
 	
-	@RequestMapping("/health")
+	/*@RequestMapping("/health")
 	public Map<String,String> health(){
 		Map<String,String> map = new HashMap<String, String>();
 		map.put("status", "UP");
 		return map;
-	}
+	}*/
 	/****************************************************************************************
 	 一、集成异构微服务系统到 SpringCloud 生态圈中(比如集成 nodejs 微服务)（正常情况测试）：
 
