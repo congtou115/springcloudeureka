@@ -6,11 +6,28 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://192.168.101.70:8761/eureka/
-    healthcheck: true
+      defaultZone: http://admin:admin@192.168.101.70:8761/eureka/
+    healthcheck: false
   instance:
+         hostname: 192.168.101.70
+         ip-address: 192.168.101.70
+         status-page-url: http://${eureka.instance.hostname}:8200/llkOA/api/index.do
          prefer-ip-address: true
-
+         instance-id: ${spring.cloud.client.ipAddress}:${spring.application.name}:${spring.application.instance_id:${server.port}}
+zuul:
+  add-host-header: true
 sidecar:
-  port: 5679
-  health-uri: http://localhost:${sidecar.port}/health.json
+  port: 8080
+  health-uri: http://${eureka.instance.hostname}:${sidecar.port}/llkOA/health.do
+logging:
+  level:
+    root: debug
+endpoints:
+  actuator:
+    enabled: true
+hystrix: 
+  command: 
+    default: 
+      execution: 
+        timeout: 
+          enabled: false

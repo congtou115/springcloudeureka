@@ -10,6 +10,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
+
+import com.google.gson.JsonObject;
+/**
+ * 自定义Zuul回退机制处理器
+ * 需要注意的是，此熔断器不支持以url配置的路由，必须使用serviceId的方式
+ * @author Administrator
+ *
+ */
 @Component
 public class BootZuulFallbackHandler implements ZuulFallbackProvider{
 
@@ -23,17 +31,17 @@ public class BootZuulFallbackHandler implements ZuulFallbackProvider{
 		return new ClientHttpResponse() {
             @Override
             public HttpStatus getStatusCode() throws IOException {
-                return HttpStatus.BAD_REQUEST;
+                return HttpStatus.OK;
             }
 
             @Override
             public int getRawStatusCode() throws IOException {
-                return HttpStatus.BAD_REQUEST.value();
+                return HttpStatus.OK.value();
             }
 
             @Override
             public String getStatusText() throws IOException {
-                return HttpStatus.BAD_REQUEST.getReasonPhrase();
+                return HttpStatus.OK.getReasonPhrase();
             }
 
             @Override
@@ -50,13 +58,17 @@ public class BootZuulFallbackHandler implements ZuulFallbackProvider{
              */
             @Override
             public InputStream getBody() throws IOException {
-                return new ByteArrayInputStream((getRoute() + " fallback").getBytes());
+            	JsonObject json = new JsonObject();
+            	json.addProperty("code", "-1");
+            	json.addProperty("info", "系统错误，请稍后再试");
+            	json.addProperty("status", "false");
+                return new ByteArrayInputStream(json.toString().getBytes());
             }
 
             @Override
             public HttpHeaders getHeaders() {
                 HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.APPLICATION_JSON);
+                headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
                 return headers;
             }
         };

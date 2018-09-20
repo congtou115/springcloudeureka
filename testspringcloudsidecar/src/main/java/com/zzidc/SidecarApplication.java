@@ -72,6 +72,7 @@ public class SidecarApplication {
 
 	 9、新起网页页签，输入 http://localhost:8200/springms-sidecar/ 正常情况下是能看到 "欢迎来到简单异构系统之 nodejs 服务首页" 信息被打印出来；
 	 10、新起网页页签，然后输入 http://localhost:8200/springms-sidecar/health.json 正常情况下是能看到 "{"status":"UP"}" 信息被打印出来；
+	 
 
 	 总结二：通过 Zuul 代理模块，统一入口路径，也可以从 zuul 上成功访问异构系统；
 

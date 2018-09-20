@@ -1,6 +1,15 @@
 ﻿spring:
   application:
     name: springms-gateway-zuul-fallback
+  redis:
+    host: 192.168.101.70
+    port: 6379
+    pool:
+      max-active: 8
+      max-idle: 8
+      max-wait: -1
+      min-idle: 2
+    timeout: 5000
 server:
   port: 8200
 eureka:
@@ -8,7 +17,7 @@ eureka:
   #environment: Test         # 修改 http://localhost:8761 地址 Eureka 首页上面 System Status 的 Environment 显示信息
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://admin:admin@localhost:8761/eureka
     healthcheck:  # 健康检查
       enabled: true
   instance:
@@ -17,17 +26,59 @@ eureka:
 
 
 #####################################################################################################
+#如果有两个服务路由规则是父子关系，比如
+#zuul.routes.feign-consumer.path=/feign-consumer/**
+#zuul.routes.feign-consumer.serviceId=feign-consumer
+ 
+#zuul.routes.feign-consumer-hello.path=/feign-consumer/hello/**
+#zuul.routes.feign-consumer-hello.serviceId=feign-consumer-hello
+#此时我访问feign-consumer-hello的路径会同时被这两条规则所匹配，Zuul中的路径匹配方式是一种线性匹配方式，即按照路由匹配规则的存储顺序依次匹配，
+#因此我们只需要确保feign-consumer-hello的匹配规则被先定义feign-consumer的匹配规则被后定义即可，但是在properties文件中我们不能保证这个先后顺序，此时我们需要用YAML来配置
+#
 zuul:
-  ignoredServices: springms-consumer-movie-ribbon-with-hystrix
+  debug: 
+    request: true #开启调试过滤器
+# 可以把不想对外开放的服务通过设置ignoredServices 来取消路由，因为默认的话zuul会把所有注册到注册中心的服务根据serviceId自动生成路由规则，例如: sidercar 会自动路由到 /sidercar/**
+#  ignoredServices: springms-consumer-movie-ribbon-with-hystrix
+#除了可以忽略掉一个服务，还可以根据接口来细化忽略规则。比如说我不想给/hello接口路由，那我们可以按如下方式配置
+  ignored-patterns: /**/wechat/**  
+#此外，还可以设置统一的前缀
+#  prefix: /zuul
+#默认情况下，重定向的地址是具体的服务实例的地址，而不是API网关的跳转地址，这种做法会暴露真实的服务地址，所以需要在Zuul中配置，配置方式很简单，如下：
+  add-host-header: true
+  # ignoredHeaders: Cookie,Set-Cookie,Authorization
+  sensitiveHeaders: #敏感信息，当设置该值时，将不再组件之间传递该值
+  host: # 当使用url方式路由的时候，此超时时间配置生效
+    connect-timeout-millis: 3000
+    socket-timeout-millis: 60000
+#关闭全局重试机制
+#  retryable: false
+  
   routes:
-    service-helloworld: /user/**
+#如果我们需要在网关上处理业务逻辑，比如访问路径是/local那么就需要用到zuul的本地跳转，配置方式如下
+    local: 
+      path: /local/**
+      url: forward:/local
+    service-helloworld: /service-helloworld/** ##使用serviceId的方式指定路由规则
+  ##下面这种是使用url的方式指定路由
+    sidecar: 
+      path: /llkOA/**
+      strip-prefix: false
+#      url: http://localhost:5678/ # 通过url
+#关闭某一个服务的重试机制
+#      retryable: false      
+      service-id: sidecar # 通过serviceId，即注册到注册中心的application name
 #####################################################################################################
-
-
-
-
+security:
+  basic:
+    enabled: false    # 启用SpringSecurity的安全配置项
+  user:
+    name: jmxjava    # 认证用户名
+    password: jmxhello # 认证密码
+    role:              # 授权角色
+    - USER
 #####################################################################################################
-# 打印日志
+#  打印日志
 logging:
   level:
     root: INFO
@@ -37,21 +88,25 @@ logging:
 
 
 #####################################################################################################
-ribbon:
-  ConnectTimeout: 3000
-  ReadTimeout: 60000
+ribbon: # 当使用serviceId访问服务的时候，ribbon的超时时间生效
+  ConnectTimeout: 3000 #连接超时时间 默认10s
+  ReadTimeout: 10000 #请求处理时间 默认60s
+  MaxAutoRetries: 1 #同一server尝试重连1次 不包括第一次连接 默认5次
+  MaxAutoRetriesNextServer: 1 #切换server重连1次 不包括第一次连接
+#从上面的配置来看，ribbon设置的最大超时时间是60000+1*60000+1*60000= 180000，那么hystrix的超时时间就应该大于这个
 #####################################################################################################
 
 
 
 
 #####################################################################################################
-# 解决第一次请求报超时异常的方案，因为 hystrix 的默认超时时间是 1 秒，因此请求超过该时间后，就会出现页面超时显示 ：
+#  解决第一次请求报超时异常的方案，因为 hystrix 的默认超时时间是 1 秒，因此请求超过该时间后，就会出现页面超时显示 ：
 #
-# 这里就介绍大概三种方式来解决超时的问题，解决方案如下：
+#  这里就介绍大概三种方式来解决超时的问题，解决方案如下：
 #
 # 第一种方式：将 hystrix 的超时时间设置成 5000 毫秒
-hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 5000
+#如果你在zuul配置了熔断fallback的话，熔断超时也要配置，不然如果你配置的ribbon超时时间大于熔断的超时，那么会先走熔断，相当于你配的ribbon超时就不生效了。 
+hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 30001
 #
 # 或者：
 # 第二种方式：将 hystrix 的超时时间直接禁用掉，这样就没有超时的一说了，因为永远也不会超时了

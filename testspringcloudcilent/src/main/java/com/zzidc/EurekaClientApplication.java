@@ -1,19 +1,9 @@
 package com.zzidc;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
-
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * [说明/描述]
@@ -24,13 +14,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @copyright copyright (c) 2018
  */
 @SpringBootApplication
-@EnableSwagger2
 @EnableEurekaClient
+@EnableScheduling 
 public class EurekaClientApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(EurekaClientApplication.class, args);
 	}
-	
-	
-	
 }

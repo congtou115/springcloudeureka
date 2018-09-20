@@ -18,9 +18,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.zzidc.util.GsonUtil;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * [说明/描述]
@@ -30,6 +33,7 @@ import io.swagger.annotations.ApiOperation;
  * @version 1.0
  * @copyright copyright (c) 2018
  */
+@EnableSwagger2
 @RestController
 @Api("测试eureka客户端")
 public class TestController {
@@ -51,8 +55,16 @@ public class TestController {
 	@RequestMapping(value="/info",method=RequestMethod.GET)
 	@ResponseBody
     public List<ServiceInstance> info(){
-		List<ServiceInstance> list = discoveryClient.getInstances("service-helloworld");
-        return list;
+		List<ServiceInstance> instances = discoveryClient.getInstances("customer-service");
+		String jsonStr = GsonUtil.gsonString(instances);
+		//再把json字符串转成listmap
+		List<Map<String,Object>> list = GsonUtil.gsonToListMaps(jsonStr);
+		for (Map<String,Object> map : list) {
+			Map<String, Object> instance =  (Map<String, Object>) map.get("instance");
+			Map<String, Object> dataCenter = (Map<String, Object>) instance.get("dataCenterInfo");
+			Map<String,String> metadata = (Map<String, String>) instance.get("metadata");
+		}
+        return instances;
     }
 	
 	@ApiOperation(value="打招呼",notes="传入名字，然后就自动生成打招呼语句")
