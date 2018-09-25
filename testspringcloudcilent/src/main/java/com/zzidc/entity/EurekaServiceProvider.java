@@ -45,6 +45,9 @@ public class EurekaServiceProvider implements Serializable{
 	@OneToMany(mappedBy = "service",cascade= {CascadeType.REMOVE})
 	private List<EurekaServiceInstance> instances;
 	
+	@OneToMany(mappedBy = "service",cascade= {CascadeType.REMOVE})
+	private List<EurekaApi> apis;
+	
 	public int getServiceId() {
 		return serviceId;
 	}
@@ -94,6 +97,19 @@ public class EurekaServiceProvider implements Serializable{
 		this.updateTime = now;
 		now = null;
 	}
+	
+
+	public EurekaServiceProvider(String serviceName, String remark, Timestamp createTime, Timestamp updateTime,
+			List<EurekaServiceIpAssociate> associtate, List<EurekaServiceInstance> instances, List<EurekaApi> apis) {
+		super();
+		this.serviceName = serviceName;
+		this.remark = remark;
+		this.createTime = createTime;
+		this.updateTime = updateTime;
+		this.associtate = associtate;
+		this.instances = instances;
+		this.apis = apis;
+	}
 
 	@Override
 	public String toString() {
@@ -119,6 +135,14 @@ public class EurekaServiceProvider implements Serializable{
 
 	public void setInstances(List<EurekaServiceInstance> instances) {
 		this.instances = instances;
+	}
+
+	public List<EurekaApi> getApis() {
+		return apis;
+	}
+
+	public void setApis(List<EurekaApi> apis) {
+		this.apis = apis;
 	}
 	
 	

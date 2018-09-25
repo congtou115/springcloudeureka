@@ -32,7 +32,7 @@
                     <ul class="nav child_menu" <#if nav lt 200&& nav gte 100>style="display: block;"</#if>>
                       <li <#if nav=100>class="current-page"</#if>><a href="/manager/index.html">服务管理</a></li>
                       <li <#if nav=101>class="current-page"</#if>><a href="/manager/whiteIpList.html">IP白名单管理</a></li>
-                      <li <#if nav=102>class="current-page"</#if>><a href="index3.html">Dashboard3</a></li>
+                      <li <#if nav=102>class="current-page"</#if>><a href="/manager/interface.html">服务接口管理</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-edit"></i> Forms <span class="fa fa-chevron-down"></span></a>

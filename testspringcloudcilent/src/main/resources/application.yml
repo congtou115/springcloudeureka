@@ -29,7 +29,7 @@
          name: service-helloworld
      devtools:
          restart:
-            enabled:  true
+            enabled:  false
          additional-paths: src/main/resources
 # security:
 #  basic:

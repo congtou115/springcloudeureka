@@ -192,4 +192,17 @@ public class ManagerController {
 		model.addAttribute("relationServices",managerService.findServiceByIp(associate));
 		return "bootstrap/updateIp";
 	}
+	
+	/**
+	 * 
+	 * [接口展示列表页面]
+	 *
+	 * @author ZhangBinbin <br>
+	 * @date   2018年9月21日  下午4:16:20 <br>
+	 * @return <br>
+	 */
+	public String listApiInfo() {
+		
+		return "bootstrap/api";
+	}
 }
