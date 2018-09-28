@@ -28,9 +28,9 @@
               <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">
-                  <li <#if nav lt 200 && nav gte 100>class="active"</#if>><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
+                  <li <#if nav lt 200 && nav gte 100>class="active"</#if>><a><i class="fa fa-home"></i> 服务管理 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu" <#if nav lt 200&& nav gte 100>style="display: block;"</#if>>
-                      <li <#if nav=100>class="current-page"</#if>><a href="/manager/index.html">服务管理</a></li>
+                      <li <#if nav=100>class="current-page"</#if>><a href="/manager/index.html">服务列表</a></li>
                       <li <#if nav=101>class="current-page"</#if>><a href="/manager/whiteIpList.html">IP白名单管理</a></li>
                       <li <#if nav=102>class="current-page"</#if>><a href="/manager/interface.html">服务接口管理</a></li>
                     </ul>

@@ -36,6 +36,7 @@ eureka:
 #因此我们只需要确保feign-consumer-hello的匹配规则被先定义feign-consumer的匹配规则被后定义即可，但是在properties文件中我们不能保证这个先后顺序，此时我们需要用YAML来配置
 #
 zuul:
+  PreDecorationFilter.pre.disable: true
   debug: 
     request: true #开启调试过滤器
 # 可以把不想对外开放的服务通过设置ignoredServices 来取消路由，因为默认的话zuul会把所有注册到注册中心的服务根据serviceId自动生成路由规则，例如: sidercar 会自动路由到 /sidercar/**
@@ -60,6 +61,7 @@ zuul:
       path: /local/**
       url: forward:/local
     service-helloworld: /service-helloworld/** ##使用serviceId的方式指定路由规则
+    api: /api/**
   ##下面这种是使用url的方式指定路由
     sidecar: 
       path: /llkOA/**

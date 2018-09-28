@@ -62,19 +62,14 @@ public class IpZuulFilter extends ZuulFilter{
 		//Assert.state(IP_WHITE_LIST.contains(ip), "此IP未添加白名单，禁止访问");
 		//设置错误信息，这种情况下，其余的过滤器还会继续执行
 		if(!IP_WHITE_LIST.contains(ip)) {
-			ctx.set("isSuccess", false);
-			ctx.setSendZuulResponse(false);//就算有此设置，也只是在pre类型过滤器执行完后停止转发
-			Gson gson = new Gson();
 			Map<String,Object> map = new HashMap<>();
 			map.put("code", "-1");
 			map.put("info", "此IP未添加白名单，禁止访问");
-			String json = gson.toJson(map);
-			ctx.setResponseBody(json);
-			ctx.setResponseStatusCode(403);
-			ctx.getResponse().setContentType("application/json; charset=utf-8");
+			HttpUtils.returnResult(ctx, map);
 		}
 		return null;
 	}
+	
 
 	@Override
 	public String filterType() {

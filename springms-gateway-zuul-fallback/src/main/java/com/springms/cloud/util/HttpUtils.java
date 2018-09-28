@@ -1,6 +1,11 @@
 package com.springms.cloud.util;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
+
+import com.google.gson.Gson;
+import com.netflix.zuul.context.RequestContext;
 
 public class HttpUtils {
 
@@ -41,4 +46,24 @@ public class HttpUtils {
         } 
         return ip; 
 	}
+	
+	/**
+	 * 
+	 * [zuul过滤器返回错误信息]
+	 *
+	 * @author ZhangBinbin <br>
+	 * @date   2018年9月28日  上午11:55:26 <br>
+	 * @param ctx
+	 * @param map <br>
+	 */
+	public static void returnResult(RequestContext ctx,Map<String,Object> map) {
+		ctx.set("isSuccess", false);
+		ctx.setSendZuulResponse(false);//就算有此设置，也只是在pre类型过滤器执行完后停止转发
+		Gson gson = new Gson();
+		String json = gson.toJson(map);
+		ctx.setResponseBody(json);
+		ctx.setResponseStatusCode(403);
+		ctx.getResponse().setContentType("application/json; charset=utf-8");
+	}
+	
 }

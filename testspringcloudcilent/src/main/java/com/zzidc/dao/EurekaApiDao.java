@@ -12,8 +12,11 @@ public interface EurekaApiDao extends JpaRepository<EurekaApi,Integer>{
 	@SuppressWarnings("unchecked")
 	EurekaApi save(EurekaApi api);
 	
+	EurekaApi findByapiId(int apiId);
+	
 	List<EurekaApi> findByService(EurekaServiceProvider service);
 	
 	List<EurekaApi> findByApiUrl(String apiurl);
 	
+	List<EurekaApi> findAll();
 }
