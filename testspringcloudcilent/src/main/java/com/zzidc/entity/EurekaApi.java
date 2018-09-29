@@ -22,11 +22,6 @@ import javax.persistence.TemporalType;
 public class EurekaApi implements Serializable{
 
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7466587222355040955L;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int apiId;

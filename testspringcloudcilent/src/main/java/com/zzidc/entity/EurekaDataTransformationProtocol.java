@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -30,6 +31,10 @@ public class EurekaDataTransformationProtocol implements Serializable{
 	@ManyToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
 	private EurekaApi api;
 	
+	@ManyToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
+	@JoinColumn(name = "customer_id",referencedColumnName = "service_id")
+	private EurekaServiceProvider customer;
+	
 	@Column
 	private int status = 1;
 	
@@ -41,6 +46,14 @@ public class EurekaDataTransformationProtocol implements Serializable{
 	
 	@OneToMany(cascade = CascadeType.ALL,mappedBy = "protocol")
 	private List<EurekaDataTransformationProtocolDetail> protocolDetails;
+
+	public EurekaServiceProvider getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(EurekaServiceProvider customer) {
+		this.customer = customer;
+	}
 
 	public int getId() {
 		return id;
@@ -90,10 +103,12 @@ public class EurekaDataTransformationProtocol implements Serializable{
 		this.protocolDetails = protocolDetails;
 	}
 
-	public EurekaDataTransformationProtocol(EurekaApi api, int status, Timestamp createTime, Timestamp updateTime,
-			List<EurekaDataTransformationProtocolDetail> protocolDetails) {
+
+	public EurekaDataTransformationProtocol(EurekaApi api, EurekaServiceProvider customer, int status,
+			Timestamp createTime, Timestamp updateTime, List<EurekaDataTransformationProtocolDetail> protocolDetails) {
 		super();
 		this.api = api;
+		this.customer = customer;
 		this.status = status;
 		this.createTime = createTime;
 		this.updateTime = updateTime;
@@ -106,9 +121,11 @@ public class EurekaDataTransformationProtocol implements Serializable{
 
 	@Override
 	public String toString() {
-		return "EurekaDataTransformationProtocol [id=" + id + ", api=" + api + ", status=" + status + ", createTime="
-				+ createTime + ", updateTime=" + updateTime + ", protocolDetails=" + protocolDetails + "]";
+		return "EurekaDataTransformationProtocol [id=" + id + ", api=" + api + ", customer=" + customer + ", status="
+				+ status + ", createTime=" + createTime + ", updateTime=" + updateTime + ", protocolDetails="
+				+ protocolDetails + "]";
 	}
+
 	
 	
 }

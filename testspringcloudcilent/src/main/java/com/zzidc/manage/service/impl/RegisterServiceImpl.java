@@ -11,6 +11,9 @@ import com.zzidc.dao.EurekaReturnparameterDao;
 import com.zzidc.entity.EurekaApi;
 import com.zzidc.entity.EurekaRequestrarameter;
 import com.zzidc.entity.EurekaReturnparameter;
+import com.zzidc.entity.EurekaServiceProvider;
+import com.zzidc.exception.MyRutimeException;
+import com.zzidc.manage.service.ManagerService;
 import com.zzidc.manage.service.RegisterService;
 
 @Service("registerService")
@@ -22,6 +25,9 @@ public class RegisterServiceImpl implements RegisterService{
 	private EurekaRequestrarameterDao apirqs;
 	@Autowired
 	private EurekaReturnparameterDao apirts;
+	
+	@Autowired
+	private ManagerService managerService;
 	
 	@Override
 	public EurekaApi addInformation(EurekaApi services) {
@@ -62,6 +68,14 @@ public class RegisterServiceImpl implements RegisterService{
 	@Override
 	public EurekaReturnparameter afterrParnames(EurekaReturnparameter sps) {
 		return apirts.save(sps);
+	}
+	@Override
+	public List<EurekaApi> findApiByServiceId(int serviceId) {
+		EurekaServiceProvider service = managerService.findServiceById(serviceId);
+		if(service == null) {
+			throw new MyRutimeException(404, "服务信息不存在");
+		}
+		return api.findByService(service);
 	}
 	
 

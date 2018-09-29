@@ -36,9 +36,9 @@
                     </ul>
                   </li>
                   <li <#if nav lt 300 && nav gte 200>class="active"</#if>><a><i class="fa fa-edit"></i> 数据总线 <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
+                    <ul class="nav child_menu" <#if nav lt 300 && nav gte 200>style="display: block;"</#if>>
                       <li <#if nav=201>class="current-page"</#if>><a href="form.html">服务列表</a></li>
-                      <li <#if nav=202>class="current-page"</#if>><a href="form_advanced.html">映射列表</a></li>
+                      <li <#if nav=202>class="current-page"</#if>><a href="/data-mapping/list.html">数据映射列表</a></li>
                       <li <#if nav=203>class="current-page"</#if>><a href="/register/toAddJk.html">接口列表</a></li>
                       <li <#if nav=204>class="current-page"</#if>><a href="/switch/switchList.html">数据转换列表</a></li>
                       <li <#if nav=205>class="current-page"</#if>><a href="form_upload.html">Form Upload</a></li>

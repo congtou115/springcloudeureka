@@ -66,4 +66,5 @@ public interface RegisterService {
 	 * @return
 	 */
 	EurekaReturnparameter afterrParnames(EurekaReturnparameter sps);
+	List<EurekaApi> findApiByServiceId(int serviceId);
 }

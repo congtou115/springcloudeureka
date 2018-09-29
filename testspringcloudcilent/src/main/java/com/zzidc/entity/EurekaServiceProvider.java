@@ -42,11 +42,14 @@ public class EurekaServiceProvider implements Serializable{
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "service",cascade= {CascadeType.ALL})
 	private List<EurekaServiceIpAssociate> associtate;
 	
-	@OneToMany(mappedBy = "service",cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "service",cascade = CascadeType.ALL)
 	private List<EurekaServiceInstance> instances;
 	
-	@OneToMany(mappedBy = "service",cascade= CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "service",cascade= CascadeType.ALL)
 	private List<EurekaApi> apis;
+	
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "customer",cascade = CascadeType.ALL)
+	private List<EurekaDataTransformationProtocol> protocols;
 	
 	public int getServiceId() {
 		return serviceId;
