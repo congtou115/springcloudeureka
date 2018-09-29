@@ -29,7 +29,7 @@ public class EurekaServiceInstance implements Serializable{
 	private int instanceId;
 	
 	@ManyToOne(targetEntity = EurekaServiceProvider.class,
-			fetch = FetchType.LAZY)
+			fetch = FetchType.LAZY,cascade = CascadeType.DETACH)
 	@JoinColumn(name = "service_id",referencedColumnName = "service_id")
 	private EurekaServiceProvider service;
 	

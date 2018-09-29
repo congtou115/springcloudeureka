@@ -29,7 +29,7 @@ public class EurekaRequestrarameter implements Serializable{
 	@Column(name="rExplain",length = 225 ,nullable = false)
 	private String rExplain;
 	
-	@ManyToOne(cascade = {CascadeType.REMOVE})
+	@ManyToOne(cascade = {CascadeType.DETACH,CascadeType.REFRESH,CascadeType.MERGE})
 	private EurekaApi api;
 
 	public Integer getRpID() {

@@ -33,7 +33,7 @@ public class EurekaIp implements Serializable{
 	@Column(name = "ip_descr",nullable = false,length = 100)
 	private String ipDescr;
 	
-	@OneToMany(fetch = FetchType.LAZY,mappedBy = "ip",cascade = {CascadeType.REMOVE})
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "ip",cascade = CascadeType.ALL)
 	private List<EurekaServiceIpAssociate> associate;
 
 	public int getIpId() {

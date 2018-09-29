@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 @Entity
 @Table(name="eureka_returnparameter")
@@ -27,8 +28,17 @@ public class EurekaReturnparameter implements Serializable{
 	@Column(name="rExplain",length = 225 ,nullable = false)
 	private String rExplain;
 	
-	@ManyToOne(cascade = {CascadeType.REMOVE})
+	@ManyToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
 	private EurekaApi api;
+	
+	@OneToOne(cascade = {CascadeType.REMOVE,CascadeType.MERGE,CascadeType.REFRESH},mappedBy="parameter")
+	private EurekaDataTransformationProtocolDetail protocolDetail;
+
+	
+	
+	public EurekaReturnparameter() {
+		super();
+	}
 
 	public Integer getRparnamesID() {
 		return rparnamesID;
@@ -70,10 +80,12 @@ public class EurekaReturnparameter implements Serializable{
 		this.api = api;
 	}
 
+
 	@Override
 	public String toString() {
 		return "EurekaReturnparameter [rparnamesID=" + rparnamesID + ", rparameterName=" + rparameterName
-				+ ", rparameterType=" + rparameterType + ", rExplain=" + rExplain + ", api=" + api + "]";
+				+ ", rparameterType=" + rparameterType + ", rExplain=" + rExplain + ", api=" + api + ", protocolDetail="
+				+ protocolDetail + "]";
 	}
 
 	public EurekaReturnparameter(Integer rparnamesID, String rparameterName, String rparameterType, String rExplain,

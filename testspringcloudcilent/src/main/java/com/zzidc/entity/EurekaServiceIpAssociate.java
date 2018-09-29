@@ -28,11 +28,11 @@ public class EurekaServiceIpAssociate implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int associateId;
 	
-	@ManyToOne(targetEntity = EurekaIp.class)
+	@ManyToOne(targetEntity = EurekaIp.class,cascade = CascadeType.DETACH)
 	@JoinColumn(name = "ip_id",referencedColumnName = "ip_id")
 	private EurekaIp ip;
 	
-	@ManyToOne(targetEntity = EurekaServiceProvider.class,fetch = FetchType.LAZY)
+	@ManyToOne(targetEntity = EurekaServiceProvider.class,fetch = FetchType.LAZY,cascade = CascadeType.DETACH)
 	@JoinColumn(name = "service_id",referencedColumnName = "service_id")
 	private EurekaServiceProvider service;
 	//0无效 1有效

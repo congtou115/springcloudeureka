@@ -26,7 +26,6 @@ public class RegisterController {
 	}
 	
 	@RequestMapping(value = "/jk")
-	@ResponseBody
 	public ModelAndView findAll() {
 		//List<EurekaApi> rglist = registerService.findAll();
 		ModelAndView mv = new ModelAndView();
