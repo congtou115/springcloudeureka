@@ -6,14 +6,14 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.zzidc.entity.EurekaReturnparameter;
+import com.zzidc.entity.EurekaServiceProvider;
 
-public class EurekaServiceProviderSerializer extends JsonSerializer<EurekaReturnparameter>{
+public class EurekaServiceProviderSerializer extends JsonSerializer<EurekaServiceProvider>{
 
 	@Override
-	public void serialize(EurekaReturnparameter value, JsonGenerator gen, SerializerProvider serializers)
+	public void serialize(EurekaServiceProvider value, JsonGenerator gen, SerializerProvider serializers)
 			throws IOException, JsonProcessingException {
-		gen.writeString(value.getRparnamesID()+"");
+		gen.writeString(value.getServiceId()+"");
 	}
 
 }
