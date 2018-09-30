@@ -23,6 +23,7 @@
     <style  type="text/css">
     	.form-group .control-label{text-align: left;}
     </style>
+    <#include "../footjs.ftl">
   </head>
 
   <body class="nav-md">
@@ -31,13 +32,12 @@
       <div class="main_container">
       	<#include "../left_nav.ftl"> 
       	<!-- page content -->
-      		<div class="right_col" role="main">
+      		<div class="right_col" role="main" style="min-height: 951px;">
 	          <div class="">
 	            <div class="page-title">
 	              <div class="title_left">
 	                <h3>添加数据映射</h3>
 	              </div>
-	
 	            </div>
 	            <div class="clearfix"></div>
                 <div class="row">
@@ -157,11 +157,13 @@
 	            </div>
 	           </div>
 	          </div>
+	    <!-- 引入弹框 -->
+	    <#include "../dialog.ftl"> 	
+	    <!-- 引入弹框 -->
       	<!-- page content -->
       	<#include "../foot_nav.ftl"> 
       </div>
     </div>
-    <#include "../footjs.ftl"> 
     <script src="/bootstrap/vendors/iCheck/icheck.min.js"></script>
     <!-- bootstrap-daterangepicker -->
     <script src="/bootstrap/vendors/moment/min/moment.min.js"></script>
@@ -227,9 +229,20 @@
 				dataType:"json",
 				success:function(data){
 					if(data.code == 500){//后台报错了
-					
+						clearApi();
+						whowAlert(data.info);
+						return;
 					}
-					
+					//如果结果不为空，就遍历结果放到下拉选中
+					var $api = $("#api")
+					$api.empty();
+					if(data.length > 0){
+						$.each(data,function(i,n){
+							$api.append('<option value="'+n.apiId+'">'+n.apiUrl+'</option>');	
+						});
+					}else{
+						clearApi();
+					}
 				}
 			})	
 		}

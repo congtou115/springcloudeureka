@@ -30,8 +30,15 @@
 		              <div class="title_left">
 		                <h3>数据映射列表 <small>展示接口配置的映射信息</small></h3>
 		              </div>
+		              <div class="title_right">
+		                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+		                  <div class="input-group  pull-right">
+		                   <a type="button" href="/data-mapping/toAdd<#if service??>/${service.serviceId}</#if><#if api??>/${api.apiId}</#if>.html" class="btn btn-info btn-lg">添加映射</a>
+		                  </div>
+		                </div>
+		              </div>
 		            </div>
-		
+					
 		            <div class="clearfix"></div>
 		            <div class="row">
 		            	<div class="col-md-12 col-sm-12 col-xs-12">
