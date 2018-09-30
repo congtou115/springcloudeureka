@@ -15,6 +15,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.zzidc.entity.jsonserializer.EurekaApiSerializer;
+import com.zzidc.entity.jsonserializer.EurekaServiceProviderSerializer;
+
 @Table(name = "eureka_datatransformation_protocol")
 @Entity
 public class EurekaDataTransformationProtocol implements Serializable{
@@ -28,9 +33,11 @@ public class EurekaDataTransformationProtocol implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
+	@JsonSerialize(using = EurekaApiSerializer.class)
 	@ManyToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
 	private EurekaApi api;
 	
+	@JsonSerialize(using = EurekaServiceProviderSerializer.class)
 	@ManyToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
 	@JoinColumn(name = "customer_id",referencedColumnName = "service_id")
 	private EurekaServiceProvider customer;
@@ -44,6 +51,7 @@ public class EurekaDataTransformationProtocol implements Serializable{
 	@Column
 	private Timestamp updateTime;
 	
+	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL,mappedBy = "protocol")
 	private List<EurekaDataTransformationProtocolDetail> protocolDetails;
 
@@ -121,9 +129,8 @@ public class EurekaDataTransformationProtocol implements Serializable{
 
 	@Override
 	public String toString() {
-		return "EurekaDataTransformationProtocol [id=" + id + ", api=" + api + ", customer=" + customer + ", status="
-				+ status + ", createTime=" + createTime + ", updateTime=" + updateTime + ", protocolDetails="
-				+ protocolDetails + "]";
+		return "EurekaDataTransformationProtocol [id=" + id + ", api=" + api + ", customer=" + customer.getServiceName() + ", status="
+				+ status + ", createTime=" + createTime + ", updateTime=" + updateTime  + "]";
 	}
 
 	

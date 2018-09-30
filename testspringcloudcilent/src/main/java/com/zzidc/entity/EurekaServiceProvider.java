@@ -14,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "eureka_service_provider")
 public class EurekaServiceProvider implements Serializable{
@@ -39,15 +41,19 @@ public class EurekaServiceProvider implements Serializable{
 	@Column(name = "update_time")
 	private Timestamp updateTime;
 
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "service",cascade= {CascadeType.ALL})
 	private List<EurekaServiceIpAssociate> associtate;
 	
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "service",cascade = CascadeType.ALL)
 	private List<EurekaServiceInstance> instances;
 	
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "service",cascade= CascadeType.ALL)
 	private List<EurekaApi> apis;
 	
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "customer",cascade = CascadeType.ALL)
 	private List<EurekaDataTransformationProtocol> protocols;
 	
@@ -113,6 +119,7 @@ public class EurekaServiceProvider implements Serializable{
 		this.instances = instances;
 		this.apis = apis;
 	}
+
 
 	@Override
 	public String toString() {

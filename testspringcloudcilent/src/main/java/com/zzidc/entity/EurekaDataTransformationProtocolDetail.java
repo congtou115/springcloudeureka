@@ -13,6 +13,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.zzidc.entity.jsonserializer.EurekaApiSerializer;
+import com.zzidc.entity.jsonserializer.EurekaDataTransformationProtocolSerializer;
+import com.zzidc.entity.jsonserializer.EurekaReturnparameterSerializer;
+
 
 @Entity
 @Table(name = "eureka_datatransformation_protocol_detail")
@@ -27,17 +32,19 @@ public class EurekaDataTransformationProtocolDetail implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
+	@JsonSerialize(using = EurekaDataTransformationProtocolSerializer.class)
 	@ManyToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
 	private EurekaDataTransformationProtocol protocol;
 	
+	@JsonSerialize(using = EurekaReturnparameterSerializer.class)
 	@OneToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
 	private EurekaReturnparameter parameter;
 	
 	@Column(length = 50)
 	private String newname;
 	
+	@JsonSerialize(using = EurekaApiSerializer.class)
 	@ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
-	//@JoinColumn(name = "api_id",referencedColumnName = "protocol_api_id")
 	private EurekaApi protocolApi;
 	
 	@Column(length = 50)

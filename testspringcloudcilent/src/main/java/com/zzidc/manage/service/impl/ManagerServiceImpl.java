@@ -37,7 +37,7 @@ public class ManagerServiceImpl implements ManagerService{
 
 	@Override
 	public EurekaServiceProvider findServiceById(int id) {
-		return serviceDao.getOne(id);
+		return serviceDao.findOne(id);
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class ManagerServiceImpl implements ManagerService{
 
 	@Override
 	public EurekaServiceIpAssociate findIpAssociateById(int associateId) {
-		return associateDao.getOne(associateId);
+		return associateDao.findOne(associateId);
 	}
 
 

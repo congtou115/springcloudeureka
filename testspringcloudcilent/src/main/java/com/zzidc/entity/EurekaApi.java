@@ -17,17 +17,30 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.zzidc.entity.jsonserializer.EurekaServiceProviderSerializer;
 @Entity
 @Table(name="eureka_api")
 public class EurekaApi implements Serializable{
 
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int apiId;
 	
-	@ManyToOne(fetch=FetchType.LAZY,cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
+	@JsonSerialize(using = EurekaServiceProviderSerializer.class )
+	@ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
 	private EurekaServiceProvider service;
+	
 	@Column(name="acompany",length = 225 ,nullable = false)
 	private String affiliatedCompany;
 	
@@ -58,26 +71,41 @@ public class EurekaApi implements Serializable{
 	@Column
 	private int status = 1;
 	
+	@JsonIgnore
 	@OneToMany(fetch=FetchType.LAZY,mappedBy = "api",cascade= CascadeType.ALL)
 	private List<EurekaRequestrarameter> apr;
 	
+	@JsonIgnore
 	@OneToMany(fetch=FetchType.LAZY,mappedBy = "api",cascade = CascadeType.ALL)
 	private List<EurekaReturnparameter> returnParameter;
 	
+	@JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss")
 	@Column(name="creatTime")
-	@Temporal(TemporalType.TIME)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date creatTime;
 	
+	@JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss")
 	@Column(name="updateTime")
-	@Temporal(TemporalType.TIME)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date updateTime;
 	
+	@JsonIgnore
 	@OneToMany(fetch=FetchType.LAZY,mappedBy = "api",cascade = CascadeType.ALL)
 	private List<EurekaDataTransformationProtocol> protocols;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "protocolApi",cascade = { CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH},fetch = FetchType.LAZY)
 	private List<EurekaDataTransformationProtocolDetail> protocolDetails;
 	
+
+	@Override
+	public String toString() {
+		return "EurekaApi [apiId=" + apiId + ", service="+service.getServiceId()+", affiliatedCompany=" + affiliatedCompany
+				+ ", entryName=" + entryName + ", interFaceName=" + interFaceName + ", apiUrl=" + apiUrl
+				+ ", requestMethod=" + requestMethod + ", consumes=" + consumes + ", returnExplain=" + returnExplain
+				+ ", produces=" + produces + ", charset=" + charset + ", status=" + status + ", creatTime=" + creatTime
+				+ ", updateTime=" + updateTime + "]";
+	}
 
 	public EurekaApi() {
 		super();
@@ -229,15 +257,6 @@ public class EurekaApi implements Serializable{
 		this.updateTime = updateTime;
 	}
 
-	@Override
-	public String toString() {
-		return "EurekaApi [apiId=" + apiId + ", service=" + service + ", affiliatedCompany=" + affiliatedCompany
-				+ ", entryName=" + entryName + ", interFaceName=" + interFaceName + ", apiUrl=" + apiUrl
-				+ ", requestMethod=" + requestMethod + ", consumes=" + consumes + ", returnExplain=" + returnExplain
-				+ ", produces=" + produces + ", charset=" + charset + ", status=" + status + ", apr=" + apr
-				+ ", returnParameter=" + returnParameter + ", creatTime=" + creatTime + ", updateTime=" + updateTime
-				+ ", protocols=" + protocols + ", protocolDetails=" + protocolDetails + "]";
-	}
 
 	public EurekaApi(EurekaServiceProvider service, String affiliatedCompany, String entryName, String interFaceName,
 			String apiUrl, String requestMethod, String consumes, String returnExplain, String produces, String charset,
