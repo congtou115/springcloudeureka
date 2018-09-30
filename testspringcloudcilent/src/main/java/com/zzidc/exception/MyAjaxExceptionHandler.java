@@ -12,4 +12,9 @@ public class MyAjaxExceptionHandler {
         e.printStackTrace();
         return JsonResult.errorException(e);
     }
+    @ExceptionHandler(value = Exception.class)
+    public JsonResult defaultErrorHandler(HttpServletRequest request, Exception e) throws Exception {
+        e.printStackTrace();
+        return JsonResult.errorException(new MyRutimeException(500, e.getMessage()));
+    }
 }

@@ -82,7 +82,7 @@ public class DaoTest {
 		api.setRequestMethod("get");
 		api.setEntryName("asdfasfas");
 		api.setInterFaceName("asdfsdf");
-		api.setReturnExample("asdfasfsadf");
+//		api.setReturnExample("asdfasfsadf");
 		apiDao.save(api);
 		EurekaReturnparameter parmeter = new EurekaReturnparameter();
 		parmeter.setApi(api);

@@ -9,9 +9,11 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zzidc.entity.EurekaApi;
 import com.zzidc.entity.EurekaServiceProvider;
+import com.zzidc.exception.MyRutimeException;
 import com.zzidc.manage.service.DataMappingManagerService;
 import com.zzidc.util.ResultInfo;
 
@@ -71,12 +73,9 @@ public class DataMappingManagerController {
 	public String toAddDMProtocol(Model model,@PathVariable int serviceId) {
 		model.addAttribute("services", dataMappingService.findAllService());
 		EurekaServiceProvider service = dataMappingService.findServiceById(serviceId);
-		
-		/*List<EurekaApi> apis = dataMappingService.findApiByServiceId(serviceId);
-		if(!ObjectUtils.isEmpty(apis)) {
+		if(service != null) {
 			model.addAttribute("service", service);
-			model.addAttribute("apis", dataMappingService.findApiByServiceId(serviceId));
-		}*/
+		}
 		return "bootstrap/datamapping/addProtocol";
 	}
 	
@@ -93,7 +92,17 @@ public class DataMappingManagerController {
 	@RequestMapping(value = "/toAdd/{serviceId}/{apiId}",method = RequestMethod.GET)
 	public String toAddProtocol(Model model,@PathVariable int apiId,@PathVariable int serviceId) {
 		model.addAttribute("services", dataMappingService.findAllService());
-		
+		EurekaServiceProvider service = dataMappingService.findServiceById(serviceId);
+		if(service != null) {
+			model.addAttribute("service", service);
+		}
+		EurekaApi api = dataMappingService.findApiById(apiId);
+		if(api != null) {
+			if(service != null && api.getService().getServiceId()!=serviceId) {
+				throw new MyRutimeException(404, "服务信息与接口信息不对应");
+			}
+			model.addAttribute("api", api);
+		}
 		return "bootstrap/datamapping/addProtocol";
 	}
 	
@@ -111,6 +120,21 @@ public class DataMappingManagerController {
 	public String toAddProtocol(Model model) {
 		model.addAttribute("services", dataMappingService.findAllService());
 		return "bootstrap/datamapping/addProtocol";
+	}
+
+	/**
+	 * 
+	 * [根据serviceId获取接口列表]
+	 *
+	 * @author ZhangBinbin <br>
+	 * @date   2018年9月30日  上午9:43:44 <br>
+	 * @param serviceId
+	 * @return <br>
+	 */
+	@RequestMapping(value = "/apiList/{serviceId}")
+	@ResponseBody
+	public List<EurekaApi> getApiList(@PathVariable int serviceId){
+		return dataMappingService.findApiByServiceId(serviceId);
 	}
 	
 }

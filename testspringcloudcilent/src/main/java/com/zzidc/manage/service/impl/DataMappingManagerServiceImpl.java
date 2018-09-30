@@ -100,6 +100,11 @@ public class DataMappingManagerServiceImpl implements DataMappingManagerService 
 	public EurekaServiceProvider findServiceById(int serviceId) {
 		return managerService.findServiceById(serviceId);
 	}
+
+	@Override
+	public EurekaApi findApiById(int apiId) {
+		return apiService.findByapiId(apiId);
+	}
 	
 	
 

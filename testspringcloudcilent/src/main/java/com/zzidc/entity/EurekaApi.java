@@ -26,7 +26,7 @@ public class EurekaApi implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int apiId;
 	
-	@ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
+	@ManyToOne(fetch=FetchType.LAZY,cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
 	private EurekaServiceProvider service;
 	@Column(name="acompany",length = 225 ,nullable = false)
 	private String affiliatedCompany;
@@ -46,8 +46,8 @@ public class EurekaApi implements Serializable{
 	@Column(length=225,nullable=false)
 	private String consumes;
 	
-	@Column(name="returnExample",length = 225 ,nullable = false)
-	private String returnExample;	
+	@Column(name="returnExplain",length = 225 ,nullable = false)
+	private String returnExplain;	
 	
 	@Column(length=225,nullable=false)
 	private String produces;
@@ -58,21 +58,21 @@ public class EurekaApi implements Serializable{
 	@Column
 	private int status = 1;
 	
-	@OneToMany(mappedBy = "api",cascade= CascadeType.ALL)
+	@OneToMany(fetch=FetchType.LAZY,mappedBy = "api",cascade= CascadeType.ALL)
 	private List<EurekaRequestrarameter> apr;
 	
-	@OneToMany(mappedBy = "api",cascade = CascadeType.ALL)
+	@OneToMany(fetch=FetchType.LAZY,mappedBy = "api",cascade = CascadeType.ALL)
 	private List<EurekaReturnparameter> returnParameter;
 	
-	@Column(name="creationTime")
+	@Column(name="creatTime")
 	@Temporal(TemporalType.TIME)
-	private Date creationTime;
+	private Date creatTime;
 	
-	@Column(name="modifiedTime")
+	@Column(name="updateTime")
 	@Temporal(TemporalType.TIME)
-	private Date modifiedTime;
+	private Date updateTime;
 	
-	@OneToMany(mappedBy = "api",cascade = CascadeType.ALL)
+	@OneToMany(fetch=FetchType.LAZY,mappedBy = "api",cascade = CascadeType.ALL)
 	private List<EurekaDataTransformationProtocol> protocols;
 	
 	@OneToMany(mappedBy = "protocolApi",cascade = { CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH},fetch = FetchType.LAZY)
@@ -147,14 +147,6 @@ public class EurekaApi implements Serializable{
 		this.consumes = consumes;
 	}
 
-	public String getReturnExample() {
-		return returnExample;
-	}
-
-	public void setReturnExample(String returnExample) {
-		this.returnExample = returnExample;
-	}
-
 	public String getProduces() {
 		return produces;
 	}
@@ -188,21 +180,6 @@ public class EurekaApi implements Serializable{
 		this.apr = apr;
 	}
 
-	public Date getCreationTime() {
-		return creationTime;
-	}
-
-	public void setCreationTime(Date creationTime) {
-		this.creationTime = creationTime;
-	}
-
-	public Date getModifiedTime() {
-		return modifiedTime;
-	}
-
-	public void setModifiedTime(Date modifiedTime) {
-		this.modifiedTime = modifiedTime;
-	}
 
 	public List<EurekaReturnparameter> getReturnParameter() {
 		return returnParameter;
@@ -228,20 +205,44 @@ public class EurekaApi implements Serializable{
 		this.protocolDetails = protocolDetails;
 	}
 
+	public String getReturnExplain() {
+		return returnExplain;
+	}
+
+	public void setReturnExplain(String returnExplain) {
+		this.returnExplain = returnExplain;
+	}
+
+	public Date getCreatTime() {
+		return creatTime;
+	}
+
+	public void setCreatTime(Date creatTime) {
+		this.creatTime = creatTime;
+	}
+
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
+
 	@Override
 	public String toString() {
 		return "EurekaApi [apiId=" + apiId + ", service=" + service + ", affiliatedCompany=" + affiliatedCompany
 				+ ", entryName=" + entryName + ", interFaceName=" + interFaceName + ", apiUrl=" + apiUrl
-				+ ", requestMethod=" + requestMethod + ", consumes=" + consumes + ", returnExample=" + returnExample
+				+ ", requestMethod=" + requestMethod + ", consumes=" + consumes + ", returnExplain=" + returnExplain
 				+ ", produces=" + produces + ", charset=" + charset + ", status=" + status + ", apr=" + apr
-				+ ", returnParameter=" + returnParameter + ", creationTime=" + creationTime + ", modifiedTime="
-				+ modifiedTime + ", protocols=" + protocols + ", protocolDetails=" + protocolDetails + "]";
+				+ ", returnParameter=" + returnParameter + ", creatTime=" + creatTime + ", updateTime=" + updateTime
+				+ ", protocols=" + protocols + ", protocolDetails=" + protocolDetails + "]";
 	}
 
 	public EurekaApi(EurekaServiceProvider service, String affiliatedCompany, String entryName, String interFaceName,
-			String apiUrl, String requestMethod, String consumes, String returnExample, String produces, String charset,
-			int status, List<EurekaRequestrarameter> apr, List<EurekaReturnparameter> returnParameter,
-			Date creationTime, Date modifiedTime, List<EurekaDataTransformationProtocol> protocols,
+			String apiUrl, String requestMethod, String consumes, String returnExplain, String produces, String charset,
+			int status, List<EurekaRequestrarameter> apr, List<EurekaReturnparameter> returnParameter, Date creatTime,
+			Date updateTime, List<EurekaDataTransformationProtocol> protocols,
 			List<EurekaDataTransformationProtocolDetail> protocolDetails) {
 		super();
 		this.service = service;
@@ -251,17 +252,19 @@ public class EurekaApi implements Serializable{
 		this.apiUrl = apiUrl;
 		this.requestMethod = requestMethod;
 		this.consumes = consumes;
-		this.returnExample = returnExample;
+		this.returnExplain = returnExplain;
 		this.produces = produces;
 		this.charset = charset;
 		this.status = status;
 		this.apr = apr;
 		this.returnParameter = returnParameter;
-		this.creationTime = creationTime;
-		this.modifiedTime = modifiedTime;
+		this.creatTime = creatTime;
+		this.updateTime = updateTime;
 		this.protocols = protocols;
 		this.protocolDetails = protocolDetails;
 	}
+
+
 
 
 

@@ -16,4 +16,5 @@ public interface DataMappingManagerService {
 	List<EurekaServiceProvider> findAllService();
 	<T> T saveOrUpdate(T t);
 	EurekaServiceProvider findServiceById(int serviceId);
+	EurekaApi findApiById(int apiId);
 }
