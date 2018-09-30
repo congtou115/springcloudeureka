@@ -223,6 +223,7 @@
 		
 		//根据serviceId级联获取api信息
 		function cascadeApiInfo(serviceId){
+			showAlert(1111111111111);
 			$.ajax({
 				url:"/data-mapping/apiList/"+serviceId,
 				type:"get",
@@ -230,7 +231,7 @@
 				success:function(data){
 					if(data.code == 500){//后台报错了
 						clearApi();
-						whowAlert(data.info);
+						showAlert(data.info);
 						return;
 					}
 					//如果结果不为空，就遍历结果放到下拉选中
